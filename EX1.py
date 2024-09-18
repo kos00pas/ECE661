@@ -97,6 +97,7 @@ def exercise_1_a (X_train, X_test, y_train, y_test):
 
     # Dictionary to store the average accuracy for each learning rate
     avg_accuracy_per_lr = {lr: np.zeros(epochs) for lr in learning_rates}
+    print(avg_accuracy_per_lr)
 
     # Loop through each learning rate and run the experiment 20 times
     for lr in learning_rates:
@@ -128,9 +129,61 @@ def exercise_1_a (X_train, X_test, y_train, y_test):
     plt.legend(title="Learning Rate")
     plt.grid(True)
 
-    plt.savefig('ex1_a.png', dpi=300, bbox_inches='tight')
+    plt.savefig('results_ex1_a.png', dpi=300, bbox_inches='tight')
     plt.show()
 
+
+def exercise_1_b(X_train, X_test, y_train, y_test):
+    # Set constant learning rate
+    learning_rate = 0.02
+    # Momentum values to test
+    momentum_values = [0.0, 0.3, 0.6, 0.9, 0.99]
+    epochs = 40
+    runs_per_momentum = 20  # Number of times to run each experiment
+
+    # Dictionary to store the average accuracy for each momentum value
+    avg_accuracy_per_momentum = {momentum: np.zeros(epochs) for momentum in momentum_values}
+
+    # Loop through each momentum value and run the experiment 20 times
+    for momentum in momentum_values:
+        print(f"Running experiments for momentum: {momentum}")
+        accuracies = []
+
+        for run in range(runs_per_momentum):
+            print(f"Run {run + 1} for momentum {momentum}")
+            # Build and compile the model with the current momentum value
+            model = models.Sequential()
+            model.add(layers.Dense(16, activation='tanh', input_shape=(X_train.shape[1],)))
+            model.add(layers.Dense(3, activation='softmax'))
+
+            # Compile model with SGD optimizer, constant learning rate, and varying momentum
+            optimizer = optimizers.SGD(learning_rate=learning_rate, momentum=momentum)
+            model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+
+            # Train the model and record the training accuracy for each epoch
+            history = model.fit(X_train, y_train, epochs=epochs, batch_size=32, validation_split=0.1, verbose=0)
+            accuracies.append(history.history['accuracy'])
+
+        # Compute the average accuracy over the 20 runs for each epoch
+        avg_accuracy = np.mean(accuracies, axis=0)
+        avg_accuracy_per_momentum[momentum] = avg_accuracy
+
+    # ############# Plotting the Results #############
+    plt.figure(figsize=(10, 6))
+
+    # Plot a curve for each momentum value
+    for momentum in momentum_values:
+        plt.plot(range(1, epochs + 1), avg_accuracy_per_momentum[momentum], label=f'Momentum = {momentum}')
+
+    # Configure the plot
+    plt.title('Training Accuracy vs Epochs for Different Momentum Values')
+    plt.xlabel('Epochs')
+    plt.ylabel('Training Accuracy')
+    plt.legend(title="Momentum")
+    plt.grid(True)
+
+    plt.savefig('results_ex1_b.png', dpi=300, bbox_inches='tight')
+    plt.show()
 
 
 # ############# Main Execution #############
@@ -140,5 +193,5 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test = data_loader.get_data()
 
     # Method: each exercise will create its own DNNs
-
     # exercise_1_a(X_train, X_test, y_train, y_test)
+    exercise_1_b(X_train, X_test, y_train, y_test)
