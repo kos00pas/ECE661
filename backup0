@@ -1,0 +1,105 @@
+from sklearn import datasets
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+import time
+# ================================================================
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+import tensorflow as tf
+from tensorflow.keras import layers, models, optimizers, losses, metrics
+
+# ================================================================
+# ############# IrisDataProcessor Class #############
+class IrisDataProcessor:
+    def __init__(self):
+        self.data = None ;         self.target = None;        self.encoded_target = None;        self.X_train = None;        self.X_test = None;        self.y_train = None;        self.y_test = None
+
+        # Automatically call the processing steps in the constructor
+        self.scaler = StandardScaler()
+        self.load_data()
+        self.one_hot_encode()
+        self.split_data()
+        self.scale_features()
+
+    # ############# Section 1: Load Iris Dataset #############
+    def load_data(self):
+        iris = datasets.load_iris()  # contains data, target, frame, target_names
+        self.data = iris.data  # each is an array of four features (sepal/petal length and width)
+        self.target = iris.target  # label, 0,1,2
+
+    # ############# Section 2: One-Hot Encode Labels #############
+    def one_hot_encode(self):
+        encoder = OneHotEncoder()  # used to convert categorical labels into a binary (one-hot) encoded format.
+        """
+        Class 0 → [1, 0, 0]
+        Class 1 → [0, 1, 0]
+        Class 2 → [0, 0, 1]
+        """
+        self.encoded_target = encoder.fit_transform(self.target.reshape(-1, 1)).toarray()
+        # for each array returns something like -> [1. 0. 0.]
+
+    # ############# Section 3: Split Dataset into Training and Testing #############
+    def split_data(self, test_size=0.2, random_state=42):
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            self.data, self.encoded_target, test_size=test_size, random_state=random_state)
+        """
+        train_test_split(X, y): This function splits the dataset into two parts: a training set and a testing set.
+        X is the feature matrix (input data).
+        y is the target labels (output data).
+        random_state -> controls the randomness involved in the operation, ensuring that the results are reproducible.
+        """
+
+    # ############# Section 4: Feature Scaling with StandardScaler #############
+    def scale_features(self):
+        """
+        The code using StandardScaler performs feature scaling,
+        -> which standardizes the data so that it has a mean of 0 and a standard deviation of 1.
+        """
+        self.X_train = self.scaler.fit_transform(self.X_train)
+        self.X_test = self.scaler.transform(self.X_test)
+
+
+# ############# NeuralNetworkClassifier Class #############
+class NeuralNetworkClassifier:
+    def __init__(self):
+        self.model = models.Sequential()
+
+        # ############# Build the model #############
+        self.build_model()
+
+    def build_model(self):
+        # Add a 16-neuron hidden dense layer with the tanh activation function
+        self.model.add(layers.Dense(16, activation='tanh', input_shape=(4,)))  # Assuming input shape is (4,)
+
+        # Add a 3-neuron output dense layer with the softmax activation function
+        self.model.add(layers.Dense(3, activation='softmax'))
+
+        # Compile the model with SGD optimizer, categorical crossentropy loss, and accuracy metric
+        optimizer = optimizers.SGD()
+        loss = losses.CategoricalCrossentropy()
+        self.model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
+
+    def train(self, X_train, y_train):
+        # Train the model with the specified parameters
+        self.model.fit(X_train, y_train, epochs=40, batch_size=32, validation_split=0.1)
+
+
+# ############# Main Execution #############
+if __name__ == "__main__":
+    time_start = time.time()
+
+    processor = IrisDataProcessor()
+
+    # Access processed data
+    X_train, X_test = processor.X_train, processor.X_test
+    y_train, y_test = processor.y_train, processor.y_test
+    time_done_data=time.time()-time_start
+    print(f"Data Loading Done -> {time_done_data:.4f}")
+
+    # Create an instance of NeuralNetworkClassifier
+    classifier = NeuralNetworkClassifier()
+
+    # Train the model
+    classifier.train(X_train, y_train)
