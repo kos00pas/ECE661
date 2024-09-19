@@ -18,11 +18,12 @@ class DataLoader:
     def __init__(self):
         print("Preparing data ... ... ... ")
         self.X_train = None ; self.X_test = None ;         self.y_train = None ; self.y_test = None
+
         # Load the Iris dataset
         iris = datasets.load_iris()  # contains data, target, frame, target_names
         X = iris.data  # each is an array of four features (sepal/petal length and width)
         y = iris.target  # label, 0,1,2
-        # print(X,y);
+
         # One-hot encode the labels
         encoder = OneHotEncoder()  # used to convert categorical labels into a binary (one-hot) encoded format.
         """
@@ -30,8 +31,9 @@ class DataLoader:
                 Class 1 → [0, 1, 0]
                 Class 2 → [0, 0, 1]
         """
+
         y = encoder.fit_transform(y.reshape(-1, 1)).toarray()
-        # print(y) ;
+
         # Split the dataset into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         """
@@ -40,9 +42,7 @@ class DataLoader:
                 y is the target labels (output data).
                 random_state -> controls the randomness involved in the operation, ensuring that the results are reproducible.
         """
-        # Check if shapes match
-        # print(f"X_train shape: {X_train.shape}")
-        # print(f"y_train shape: {y_train.shape}")
+
         # Standardize the feature values
         scaler = StandardScaler()
         self.X_train = scaler.fit_transform(X_train)
@@ -95,29 +95,33 @@ class NeuralNetworkExperiment:
         return history.history['accuracy']  # Return training accuracy for each epoch
 
 def exercise_1_a (X_train, X_test, y_train, y_test):
-    learning_rates = [0.003, 0.03, 0.06, 0.2, 0.5]  # Different learning rates to test
+    # Different learning rates to test
+    learning_rates = [0.003, 0.03, 0.06, 0.2, 0.5]
     epochs = 40
     runs_per_learning_rate = 20  # Number of times to run each experiment
 
-    # Dictionary to store the average accuracy for each learning rate
     avg_accuracy_per_lr = {lr: np.zeros(epochs) for lr in learning_rates}
-    print(avg_accuracy_per_lr)
+    # Setup Dictionary to store the average accuracy for each learning rate
 
-    # Loop through each learning rate and run the experiment 20 times
+    """#######################################################################"""
     for lr in learning_rates:
+        # Loop through each learning rate and run the experiment 20 times
         print(f"Running experiments for learning rate: {lr}")
         accuracies = []
 
         for run in range(runs_per_learning_rate):
             print(f"Run {run + 1} for learning rate {lr}")
+            """#############"""
             experiment = NeuralNetworkExperiment(X_train, X_test, y_train, y_test, learning_rate=lr)
             experiment.build_model()
             accuracy = experiment.train_model()
             accuracies.append(accuracy)
+            """#############"""
 
         # Compute the average accuracy over the 20 runs
         avg_accuracy = np.mean(accuracies, axis=0)
         avg_accuracy_per_lr[lr] = avg_accuracy
+    """#######################################################################"""
 
     # ############# Plotting the Results #############
     plt.figure(figsize=(10, 6))
@@ -125,6 +129,8 @@ def exercise_1_a (X_train, X_test, y_train, y_test):
     # Plot a curve for each learning rate
     for lr in learning_rates:
         plt.plot(range(1, epochs + 1), avg_accuracy_per_lr[lr], label=f'LR = {lr}')
+        #plt.plot(x, y, format_string='', **kwargs)
+
 
     # Configure the plot
     plt.title('Training Accuracy vs Epochs for Different Learning Rates')
@@ -132,34 +138,30 @@ def exercise_1_a (X_train, X_test, y_train, y_test):
     plt.ylabel('Training Accuracy')
     plt.legend(title="Learning Rate")
     plt.grid(True)
-
     plt.savefig('./images/results_ex1_a.png', dpi=300, bbox_inches='tight')
     plt.show()
 
 
 def exercise_1_b(X_train, X_test, y_train, y_test):
-    # Set constant learning rate
     learning_rate = 0.02
-    # Momentum values to test
     momentum_values = [0.0, 0.3, 0.6, 0.9, 0.99]
     epochs = 40
     runs_per_momentum = 20  # Number of times to run each experiment
 
-    # Dictionary to store the average accuracy for each momentum value
     avg_accuracy_per_momentum = {momentum: np.zeros(epochs) for momentum in momentum_values}
-
+    print(avg_accuracy_per_momentum)
     for momentum in momentum_values:
         print(f"Running experiments for momentum: {momentum}")
         accuracies = []
 
         for run in range(runs_per_momentum):
             print(f"Run {run + 1} for momentum {momentum}")
-            # Create an instance of NeuralNetworkExperiment
+            """#############"""
             experiment = NeuralNetworkExperiment(X_train, X_test, y_train, y_test, learning_rate)
-            # Build the model with momentum included
             experiment.build_model(momentum=momentum)  # Modify build_model to accept momentum
             accuracy = experiment.train_model()
             accuracies.append(accuracy)
+            """#############"""
 
         # Compute the average accuracy over the 20 runs
         avg_accuracy = np.mean(accuracies, axis=0)
@@ -178,26 +180,28 @@ def exercise_1_b(X_train, X_test, y_train, y_test):
     plt.savefig('./images/results_ex1_b.png', dpi=300, bbox_inches='tight')
     plt.show()
 
-def exercise_1_c(X_train, X_test, y_train, y_test, neuron_list=[4, 8, 16, 32, 64], epochs=40, batch_size=32):
+def exercise_1_c(X_train, X_test, y_train, y_test ):
+    neuron_list = [4, 8, 16, 32, 64]
+    epochs = 40
+    batch_size = 32
     results = {}
 
     for neurons in neuron_list:
         accuracies = []
-        for i in range(20):  # Running the training process 20 times for averaging
-            # Build the model with the specified number of neurons in the hidden layer
+        for i in range(20):
+            """#############"""
+            """Build a New NN"""
             model = models.Sequential()
-            model.add(layers.Input(shape=(X_train.shape[1],)))  # Use Input layer to define the input shape
-            model.add(layers.Dense(neurons, activation='tanh'))
+            model.add(layers.Input(shape=(X_train.shape[1],)))
+            model.add(layers.Dense(neurons, activation='tanh')) # Neurons
             model.add(layers.Dense(y_train.shape[1], activation='softmax'))
-
-            # Compile the model using SGD with learning rate 0.02 and momentum 0.9
+            """#############"""
             optimizer = optimizers.SGD(learning_rate=0.02, momentum=0.9)
             model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
-
-
-
+            """#############"""
             history = model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, validation_split=0.1, verbose=0)
             accuracies.append(history.history['accuracy'])
+            """#############"""
 
         # Average the accuracy over 20 runs for each neuron setting
         avg_accuracy = np.mean(accuracies, axis=0)
@@ -236,27 +240,22 @@ def exercise_1_d(X_train, X_test, y_train, y_test):
 
     # Store the results for each activation function
     results = {activation: np.zeros(epochs) for activation in activations}
-
+    """#######################################################################"""
     for activation in activations:
-        # Run the training process 20 times for each activation function
         for _ in range(20):
-            # Define the model
+            """#############"""
             model = Sequential()
             model.add(Dense(n_hidden_neurons, input_dim=X_train.shape[1], activation=activation))
             model.add(Dense(n_classes, activation='softmax'))
-
-            # Compile the model
+            """#############"""
             optimizer = SGD(learning_rate=learning_rate, momentum=momentum)
             model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
-
-            # Train the model
+            """#############"""
             history = model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, verbose=0, validation_split=0.1)
-
-            # Add the training accuracy for each epoch to the results
             results[activation] += np.array(history.history['accuracy'])
-
-        # Average the results across the 20 runs
+        """#############"""
         results[activation] /= 20
+    """#######################################################################"""
 
     # Plot the results
     plt.figure()
@@ -294,33 +293,30 @@ def exercise_1_e(X_train, X_test, y_train, y_test):
     # Store average accuracy for each batch size
     batch_size_accuracy = {}
 
+    """#######################################################################"""
     for batch_size in batch_sizes:
         print(f"Training with batch size: {batch_size}")
         accuracies = []
-
-        for _ in range(20):  # Run training 20 times
-            # Build the model
+        for _ in range(20):
+            """#############"""
             model = Sequential()
             model.add(Dense(hidden_neurons, activation=activation_function, input_shape=(X_train.shape[1],)))
             model.add(Dense(3, activation='softmax'))  # 3 output classes for Iris dataset
-
-            # Compile the model
+            """#############"""
             optimizer = SGD(learning_rate=learning_rate, momentum=momentum)
             model.compile(optimizer=optimizer,
                           loss=CategoricalCrossentropy(),
                           metrics=['accuracy'])
-
-            # Train the model
+            """#############"""
             history = model.fit(X_train, y_train,
                                 epochs=epochs,
                                 batch_size=batch_size,
                                 validation_split=0.1,
                                 verbose=0)
-
-            # Collect the final training accuracy after each run
+            """#############"""
             accuracies.append(history.history['accuracy'])
+        """#######################################################################"""
 
-        # Compute the average accuracy for each epoch across 20 runs
         avg_accuracy = np.mean(accuracies, axis=0)
         batch_size_accuracy[batch_size] = avg_accuracy
 
@@ -362,30 +358,27 @@ def exercise_2(X_train, X_test, y_train, y_test):
 
     # Ensure the ./images directory exists
     os.makedirs('./images', exist_ok=True)
-
-    # Loop through each combination
+    """#######################################################################"""
     for lr in learning_rates:
         for neurons in neurons_list:
             for batch_size in batch_sizes:
                 print(f"Running model with lr={lr}, neurons={neurons}, batch_size={batch_size}")
-
-                # Build the model
+                """#############"""
                 model = Sequential()
                 model.add(Dense(neurons, input_shape=(X_train.shape[1],), activation='relu'))
                 model.add(Dense(3, activation='softmax'))  # 3 output classes for Iris dataset
-
-                # Compile the model
+                """#############"""
                 optimizer = SGD(learning_rate=lr, momentum=0.9)
                 model.compile(optimizer=optimizer,
                               loss=CategoricalCrossentropy(),
                               metrics=['accuracy'])
-
-                # Train the model
+                """#############"""
                 history = model.fit(X_train, y_train,
                                     epochs=epochs,
                                     batch_size=batch_size,
                                     validation_split=0.1,
                                     verbose=0)
+                """#######################################################################"""
 
                 # Save the plot
                 plt.figure(figsize=(10, 6))
@@ -517,8 +510,8 @@ if __name__ == "__main__":
     """# Method: each exercise will create its own DNNs"""
 
     # exercise_1_a(X_train, X_test, y_train, y_test)
-    # exercise_1_b(X_train, X_test, y_train, y_test)
+    exercise_1_b(X_train, X_test, y_train, y_test)
     # exercise_1_c(X_train, X_test, y_train, y_test)
     # exercise_1_d(X_train, X_test, y_train, y_test)
     # exercise_1_e(X_train, X_test, y_train, y_test)
-    exercise_2(X_train, X_test, y_train, y_test)
+    # exercise_2(X_train, X_test, y_train, y_test)

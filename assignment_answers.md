@@ -1,4 +1,5 @@
 ### 1.a 
+![](code_screens/1_a.png)
 - a. **Best performing learning rate**: 
   - 0.5, as it achieves the best accuracy quickly with fewer epochs.
 - b. **Learning rate explanation**:
@@ -8,6 +9,7 @@
   - A rate of 0.2 avoids fluctuations while maintaining efficiency.
 ![](images/results_ex1_a.png)
 ### 1.b
+![](code_screens/1_b.png)
 - a. **Best performing momentum:**
   - 0.9, as it reduces oscillations and accelerates convergence effectively(better than 0.99), leading to smoother updates.
 - b. **What is momentum and how does it affect the training process?**:
@@ -24,6 +26,7 @@
 
 
 ### 1.c 
+![](code_screens/1_c.png)
 - a. **Best performing hidden layer neuron number**:
   - Based on the plot, 64 neurons perform the best as they achieve the highest accuracy after more epochs. 
   - However, 16 and 32 neurons perform well at lower epochs (around 10-15), reaching good accuracy quickly.
@@ -36,6 +39,7 @@
 
 
 ### 1.d 
+![](code_screens/1_d.png)
 - a. **Best performing activation function**:
   - ReLU, as it is computationally cheaper and avoids the vanishing gradient problem while 'dying ReLU' is less harmful.
 - b. **Activation function explanation**: 
@@ -48,6 +52,7 @@
 
 
 ### 1.e 
+![](code_screens/1_e.png)
 - a. **Best performing batch size**: 
   - Based on the performance at lower epochs, smaller batch sizes (like 8 or 16) perform better, as they allow for quicker adaptation.
   - However, larger batch sizes (like 64) eventually lead to more stable and higher accuracy, especially over longer training epochs.
@@ -60,7 +65,8 @@
 ![](images/results_ex1_e.png)
 
 
-### 2. 
+### 2.
+![](code_screens/2.png)
  - activation function : ReLU
    - Avoid vanishing gradient problem in better than avoid dying relu
    - Computationally simpler , promotes sparsity 
