@@ -406,14 +406,22 @@ def exercise_2(X_train, X_test, y_train, y_test):
                 accuracy_epoch_10 = history.history['accuracy'][9]  # 10th epoch (index 9)
                 accuracy_epoch_15 = history.history['accuracy'][14]  # 15th epoch (index 14)
                 accuracy_epoch_40 = history.history['accuracy'][39]  # 40th epoch (index 39)
-                best_model_accuracy = max(history.history['accuracy'])  # Best accuracy across all epochs
 
-                # Track the best model
+                # Find best accuracy between epochs 10, 15, and 40, and record the corresponding epoch
+                best_model_accuracy = max(accuracy_epoch_10, accuracy_epoch_15, accuracy_epoch_40)
+                if best_model_accuracy == accuracy_epoch_10:
+                    best_model_epoch = 'epoch: 10'
+                elif best_model_accuracy == accuracy_epoch_15:
+                    best_model_epoch = 'epoch: 15'
+                else:
+                    best_model_epoch = 'epoch: 40'
+
+                # Track the best model overall
                 if best_model_accuracy > best_accuracy:
                     best_accuracy = best_model_accuracy
                     best_params = {'lr': lr, 'neurons': neurons, 'batch_size': batch_size}
 
-                # Append the results
+                # Append the results (the best accuracy between epochs 10, 15, and 40)
                 results.append({
                     'lr': lr,
                     'neurons': neurons,
@@ -421,11 +429,34 @@ def exercise_2(X_train, X_test, y_train, y_test):
                     'accuracy_epoch_10': accuracy_epoch_10,
                     'accuracy_epoch_15': accuracy_epoch_15,
                     'accuracy_epoch_40': accuracy_epoch_40,
-                    'best_accuracy': best_model_accuracy
+                    'best_accuracy': f"{best_model_accuracy} ({best_model_epoch})"
+                    # Best accuracy and corresponding epoch
                 })
 
     # Convert results to a pandas DataFrame for the table
     results_df = pd.DataFrame(results)
+
+    # Find the models with the best accuracy for epochs 10, 15, and 40 respectively
+    best_at_epoch_10 = results_df.loc[results_df['accuracy_epoch_10'].idxmax()]
+    best_at_epoch_15 = results_df.loc[results_df['accuracy_epoch_15'].idxmax()]
+    best_at_epoch_40 = results_df.loc[results_df['accuracy_epoch_40'].idxmax()]
+
+    # Find the best overall model
+    best_overall_model = results_df.loc[results_df['best_accuracy'].apply(lambda x: float(x.split()[0])).idxmax()]
+
+    # Create a new row for the best models at epochs 10, 15, and 40, and the overall best model
+    best_combined_row = pd.DataFrame([{
+        'lr': f"({best_at_epoch_10['lr']}, {best_at_epoch_15['lr']}, {best_at_epoch_40['lr']})",
+        'neurons': f"({best_at_epoch_10['neurons']}, {best_at_epoch_15['neurons']}, {best_at_epoch_40['neurons']})",
+        'batch_size': f"({best_at_epoch_10['batch_size']}, {best_at_epoch_15['batch_size']}, {best_at_epoch_40['batch_size']})",
+        'accuracy_epoch_10': best_at_epoch_10['accuracy_epoch_10'],
+        'accuracy_epoch_15': best_at_epoch_15['accuracy_epoch_15'],
+        'accuracy_epoch_40': best_at_epoch_40['accuracy_epoch_40'],
+        'best_accuracy': f"{best_overall_model['best_accuracy']} ({best_overall_model['lr']}, {best_overall_model['neurons']}, {best_overall_model['batch_size']})"
+    }])
+
+    # Use pd.concat to append the new row to the dataframe
+    results_df = pd.concat([results_df, best_combined_row], ignore_index=True)
 
     # Print the table in terminal format
     print("\nResults Table:")
@@ -439,6 +470,42 @@ def exercise_2(X_train, X_test, y_train, y_test):
         f"\nBest Model: LR={best_params['lr']}, Neurons={best_params['neurons']}, Batch Size={best_params['batch_size']}")
     print(f"Best Accuracy: {best_accuracy}")
     print("Experiment completed.")
+
+    # Plot results for the accuracies
+    def plot_results(df):
+        plt.figure(figsize=(14, 8))
+
+        # Plot lines for each epoch and the best accuracy
+        plt.plot(df.index[:-1], df['accuracy_epoch_10'][:-1], marker='o', label='accuracy_epoch_10', color='b')
+        plt.plot(df.index[:-1], df['accuracy_epoch_15'][:-1], marker='o', label='accuracy_epoch_15', color='orange')
+        plt.plot(df.index[:-1], df['accuracy_epoch_40'][:-1], marker='o', label='accuracy_epoch_40', color='g')
+        plt.plot(df.index[:-1], df['best_accuracy'][:-1].apply(lambda x: float(x.split()[0])), marker='o',
+                 label='best_accuracy', color='r')
+
+        # Set the y-axis limits from 0.9 to 1
+        plt.ylim(0.9, 1)
+
+        # Add labels and title
+        plt.xlabel('Model Combinations (Index)')
+        plt.ylabel('Accuracy')
+        plt.title('Accuracies for Each Epoch and Best Accuracy (Y-axis from 0.9 to 1)')
+
+        # Add ticks and xtick labels for the models
+        plt.xticks(df.index[:-1], [f"LR={lr}, N={neurons}, BS={bs}" for lr, neurons, bs in
+                                   zip(df['lr'][:-1], df['neurons'][:-1], df['batch_size'][:-1])], rotation=45)
+
+        plt.legend()
+        plt.grid(True)
+
+        # Save the plot
+        plt.tight_layout()
+        plt.savefig('./images/results_222_limited_yaxis.png', dpi=300, bbox_inches='tight')
+
+        # Show the plot
+        plt.show()
+
+    # Call the function to plot the results
+    plot_results(results_df)
 
 
 # ############# Main Execution #############

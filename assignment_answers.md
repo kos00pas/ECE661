@@ -6,21 +6,22 @@
   - Higher rates lead to faster accuracy but risk overshooting and instability. 
   - Lower rates ensure stability but slower convergence. 
   - A rate of 0.2 avoids fluctuations while maintaining efficiency.
-
+![](images/results_ex1_a.png)
 ### 1.b
 - a. **Best performing momentum:**
   - 0.9, as it reduces oscillations and accelerates convergence effectively(better than 0.99), leading to smoother updates.
-- b. **What is momentum and how does it affect the training process?**: 
-  - Momentum is a technique used in Stochastic Gradient Descent (SGD) to accelerate the optimization process by incorporating a fraction of the previous gradients into the current update. 
+- b. **What is momentum and how does it affect the training process?**:
+  - Momentum is a technique used in Stochastic Gradient Descent (SGD) to accelerate the optimization process by incorporating a fraction of the previous gradients into the current update.
     - This helps smooth out fluctuations in the gradient updates and reduces oscillations, allowing the model to converge faster and more steadily toward the optimal solution.
-  - Without momentum (momentum = 0), the optimization behaves like standard SGD, where the model updates weights based only on the current gradient. 
-    - This can introduce noise and cause oscillations, especially when using mini-batches, as the gradients are calculated from random subsets of data. 
+  - Without momentum (momentum = 0), the optimization behaves like standard SGD, where the model updates weights based only on the current gradient.
+    - This can introduce noise and cause oscillations, especially when using mini-batches, as the gradients are calculated from random subsets of data.
     - This randomness can make the optimization slower and unstable.
   - With momentum, a fraction of the previous weight updates is carried forward into the current update.
-    - This allows the optimizer to "gain speed" in the right direction (where the gradients are more significant) while decelerating movement in less important directions. 
-    - Higher momentum values like 0.9 or 0.99 help smooth the trajectory of updates by averaging the gradient updates over time, which reduces oscillations and helps escape local minima. 
-    - As a result, the model converges more quickly and smoothly.
-        
+    - This allows the optimizer to "gain speed" in the right direction (where the gradients are more significant) while decelerating movement in less important directions.
+    - Higher momentum values like 0.9 or 0.99 help smooth the trajectory of updates by averaging the gradient updates over time, which reduces oscillations and helps escape local minima.
+- As a result, the model converges more quickly and smoothly.
+![](images/results_ex1_b.png)
+
 
 ### 1.c 
 - a. **Best performing hidden layer neuron number**:
@@ -31,6 +32,8 @@
 - b. **Neurons explanation**: 
   - More neurons (e.g., 64) allow the model to capture more complex patterns, leading to higher accuracy, but may risk overfitting as the model becomes more complex.
   - Fewer neurons (e.g., 16 or 32) generalize better at lower epochs, reducing the risk of overfitting but may not capture as complex patterns as efficiently.
+![](images/results_ex1_c.png)
+
 
 ### 1.d 
 - a. **Best performing activation function**:
@@ -40,6 +43,9 @@
   - Tanh & Sigmoid: Both squash the input into a specific range (Tanh: -1 to 1, Sigmoid: 0 to 1), but can lead to vanishing gradients, slowing down learning.
   - ReLU: It outputs the input directly if positive, otherwise returns zero, avoiding the vanishing gradient problem but can suffer from "dying ReLU," where neurons stop updating.
   - All the above are Non-linear activation functions that can help the network learn complex patterns.
+![](images/results_ex1_d.png)
+
+
 
 ### 1.e 
 - a. **Best performing batch size**: 
@@ -51,19 +57,36 @@
 - b. **Batch size explanation**: 
   - Batch size determines how many samples are processed before weight updates.
   - Smaller sizes provide quicker adaptation but with more instability. Larger sizes ensure stable and gradual updates.
+![](images/results_ex1_e.png)
+
 
 ### 2. 
-Results Table:
- lr  neurons  batch_size  accuracy_epoch_10  accuracy_epoch_15  accuracy_epoch_40  best_accuracy
-0.2       32          32           0.972222           0.972222           0.972222       0.990741
-0.2       32          64           0.972222           0.962963           0.962963       0.981481
-0.2       64          32           0.962963           0.962963           0.981481       0.981481
-0.2       64          64           0.962963           0.972222           0.981481       0.981481
-0.5       32          32           0.953704           0.962963           0.925926       0.981481
-0.5       32          64           0.972222           0.972222           0.972222       0.981481
-0.5       64          32           0.944444           0.972222           0.981481       0.981481
-0.5       64          64           0.962963           0.962963           0.972222       0.981481
+ - activation function : ReLU
+   - Avoid vanishing gradient problem in better than avoid dying relu
+   - Computationally simpler , promotes sparsity 
 
-Best Model: LR=0.2, Neurons=32, Batch Size=32
-Best Accuracy: 0.9907407164573669
-Experiment completed.
+ - Momentum : 0.9
+    - A good balance between smoothing the updates and reducing oscillations, while avoiding excessive inertia that might come with higher momentum values like 0.99   
+
+ - Learning rate  : 0.2
+    - Less instability risks associated with the higher rate of 0.5.
+
+ - hidden layer neurons: 32
+   - More neurons allow the model to capture complex patterns in the data.
+   - Select 32 over 64 to reduce the risk of Overfitting.
+
+ - batch size:  64
+    - table and gradual updates 
+    - Larger batch sizes tend to generalize
+
+#### Tricky part : 
+- Learning Rate: 0.2 instead 0.5 
+  - stability , less  overshooting  risk 
+- Neurons: 32  instead 64 -
+  - more patters less overfitting risk 
+- Batch size: 64  instead 32 -
+  - stable and gradual updates
+
+To be sure about the [Learning Rate, Neurons, Batch size] I prepare the following experiment:
+* Keep constant ReLu, Momentum and changing the above (total 8 combinations). 
+![](images/)
