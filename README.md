@@ -1,3 +1,7 @@
+## Neural Network Workflow 
+![](code_screens/nn.png)
+
+
 ### 1.a 
 ![](code_screens/1_a.png)
 - a. **Best performing learning rate**: 

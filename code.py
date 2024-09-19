@@ -59,8 +59,7 @@ class DataLoader:
 class NeuralNetworkExperiment:
     def __init__(self, X_train, X_test, y_train, y_test, learning_rate):
         # Initialize with prepared data and learning rate
-        self.X_train = X_train ; self.X_test = X_test ; self.y_train = y_train ; self.y_test = y_test ; self.learning_rate = learning_rate ;
-        self.model = None
+        self.X_train = X_train ; self.X_test = X_test ; self.y_train = y_train ; self.y_test = y_test ; self.learning_rate = learning_rate ; self.model = None
 
     # ############# Section 2: Build the Model #############
     def build_model(self, momentum=None):
@@ -80,6 +79,7 @@ class NeuralNetworkExperiment:
         optimizer = optimizers.SGD(learning_rate=self.learning_rate,
                                    momentum=momentum) if momentum is not None else optimizers.SGD(
                                     learning_rate=self.learning_rate)
+
         self.model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
 
     # ############# Section 3: Train the Model #############
