@@ -1,4 +1,8 @@
 LINK : https://github.com/kos00pas/ECE661.git
+# To RUN 
+- Uncomment the function to the corresponding exercise you want to run  
+![](code_screens/main.png)
+
 
 ## Neural Network Workflow 
 ![](Tensorflow_NN_structure.png)
