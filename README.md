@@ -1,6 +1,6 @@
 ## Neural Network Workflow 
+![](Tensorflow_NN_structure.png)
 ![](code_screens/nn.png)
-![](workflow.png)
 
 ### 1.a 
 ![](code_screens/1_a.png)

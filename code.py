@@ -510,7 +510,7 @@ if __name__ == "__main__":
     """# Method: each exercise will create its own DNNs"""
 
     # exercise_1_a(X_train, X_test, y_train, y_test)
-    exercise_1_b(X_train, X_test, y_train, y_test)
+    # exercise_1_b(X_train, X_test, y_train, y_test)
     # exercise_1_c(X_train, X_test, y_train, y_test)
     # exercise_1_d(X_train, X_test, y_train, y_test)
     # exercise_1_e(X_train, X_test, y_train, y_test)
