@@ -89,4 +89,5 @@
 
 To be sure about the [Learning Rate, Neurons, Batch size] I prepare the following experiment:
 * Keep constant ReLu, Momentum and changing the above (total 8 combinations). 
-![](images/)
+![](images/results_222_limited_yaxis.png)
+![](images/lr_0.2_neurons_32_batch_size_64.png)
