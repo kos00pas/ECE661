@@ -1,0 +1,130 @@
+C:\Users\kos00\anaconda3\envs\doa_env\python.exe C:\Users\kos00\Documents\Run_programs_2\ECE661---code\Assignment_2\Assignment_2\ask1_.py 
+Start Loading
+Done Loading
+Model: "functional"
+┌─────────────────────┬───────────────────┬────────────┬───────────────────┐
+│ Layer (type)        │ Output Shape      │    Param # │ Connected to      │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ input_layer         │ (None, 28, 28, 1) │          0 │ -                 │
+│ (InputLayer)        │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ conv2d (Conv2D)     │ (None, 28, 28,    │        320 │ input_layer[0][0] │
+│                     │ 32)               │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ batch_normalization │ (None, 28, 28,    │        128 │ conv2d[0][0]      │
+│ (BatchNormalizatio… │ 32)               │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ global_average_poo… │ (None, 32)        │          0 │ batch_normalizat… │
+│ (GlobalAveragePool… │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ reshape (Reshape)   │ (None, 1, 1, 32)  │          0 │ global_average_p… │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense (Dense)       │ (None, 1, 1, 2)   │         64 │ reshape[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_1 (Dense)     │ (None, 1, 1, 32)  │         64 │ dense[0][0]       │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ multiply (Multiply) │ (None, 28, 28,    │          0 │ batch_normalizat… │
+│                     │ 32)               │            │ dense_1[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ max_pooling2d       │ (None, 14, 14,    │          0 │ multiply[0][0]    │
+│ (MaxPooling2D)      │ 32)               │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ conv2d_1 (Conv2D)   │ (None, 14, 14,    │     18,496 │ max_pooling2d[0]… │
+│                     │ 64)               │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ batch_normalizatio… │ (None, 14, 14,    │        256 │ conv2d_1[0][0]    │
+│ (BatchNormalizatio… │ 64)               │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ global_average_poo… │ (None, 64)        │          0 │ batch_normalizat… │
+│ (GlobalAveragePool… │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ reshape_1 (Reshape) │ (None, 1, 1, 64)  │          0 │ global_average_p… │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_2 (Dense)     │ (None, 1, 1, 4)   │        256 │ reshape_1[0][0]   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_3 (Dense)     │ (None, 1, 1, 64)  │        256 │ dense_2[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ multiply_1          │ (None, 14, 14,    │          0 │ batch_normalizat… │
+│ (Multiply)          │ 64)               │            │ dense_3[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ max_pooling2d_1     │ (None, 7, 7, 64)  │          0 │ multiply_1[0][0]  │
+│ (MaxPooling2D)      │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ conv2d_2 (Conv2D)   │ (None, 7, 7, 128) │     73,856 │ max_pooling2d_1[… │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ batch_normalizatio… │ (None, 7, 7, 128) │        512 │ conv2d_2[0][0]    │
+│ (BatchNormalizatio… │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ global_average_poo… │ (None, 128)       │          0 │ batch_normalizat… │
+│ (GlobalAveragePool… │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ reshape_2 (Reshape) │ (None, 1, 1, 128) │          0 │ global_average_p… │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_4 (Dense)     │ (None, 1, 1, 8)   │      1,024 │ reshape_2[0][0]   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_5 (Dense)     │ (None, 1, 1, 128) │      1,024 │ dense_4[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ multiply_2          │ (None, 7, 7, 128) │          0 │ batch_normalizat… │
+│ (Multiply)          │                   │            │ dense_5[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ max_pooling2d_2     │ (None, 3, 3, 128) │          0 │ multiply_2[0][0]  │
+│ (MaxPooling2D)      │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ global_average_poo… │ (None, 128)       │          0 │ max_pooling2d_2[… │
+│ (GlobalAveragePool… │                   │            │                   │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_6 (Dense)     │ (None, 128)       │     16,512 │ global_average_p… │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dropout (Dropout)   │ (None, 128)       │          0 │ dense_6[0][0]     │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ dense_7 (Dense)     │ (None, 10)        │      1,290 │ dropout[0][0]     │
+└─────────────────────┴───────────────────┴────────────┴───────────────────┘
+Total params: 114,058 (445.54 KB)
+Trainable params: 113,610 (443.79 KB)
+Non-trainable params: 448 (1.75 KB)
+Epoch 1/20
+C:\Users\kos00\anaconda3\envs\doa_env\Lib\site-packages\keras\src\trainers\data_adapters\py_dataset_adapter.py:121: UserWarning: Your `PyDataset` class should call `super().__init__(**kwargs)` in its constructor. `**kwargs` can include `workers`, `use_multiprocessing`, `max_queue_size`. Do not pass these arguments to `fit()`, as they will be ignored.
+  self._warn_if_super_not_called()
+938/938 ━━━━━━━━━━━━━━━━━━━━ 47s 48ms/step - accuracy: 0.6995 - loss: 0.8435 - val_accuracy: 0.7880 - val_loss: 0.5770 - learning_rate: 0.0010
+Epoch 2/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 43s 45ms/step - accuracy: 0.8436 - loss: 0.4299 - val_accuracy: 0.8489 - val_loss: 0.4473 - learning_rate: 0.0010
+Epoch 3/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 50s 53ms/step - accuracy: 0.8636 - loss: 0.3805 - val_accuracy: 0.8634 - val_loss: 0.3744 - learning_rate: 0.0010
+Epoch 4/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 50s 54ms/step - accuracy: 0.8744 - loss: 0.3477 - val_accuracy: 0.8865 - val_loss: 0.3103 - learning_rate: 0.0010
+Epoch 5/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 47s 50ms/step - accuracy: 0.8814 - loss: 0.3288 - val_accuracy: 0.8662 - val_loss: 0.3694 - learning_rate: 0.0010
+Epoch 6/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 47s 50ms/step - accuracy: 0.8913 - loss: 0.3055 - val_accuracy: 0.8858 - val_loss: 0.3119 - learning_rate: 5.0000e-04
+Epoch 7/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 50s 53ms/step - accuracy: 0.8970 - loss: 0.2857 - val_accuracy: 0.8932 - val_loss: 0.3080 - learning_rate: 5.0000e-04
+Epoch 8/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 50s 53ms/step - accuracy: 0.8985 - loss: 0.2800 - val_accuracy: 0.8848 - val_loss: 0.3075 - learning_rate: 5.0000e-04
+Epoch 9/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 50s 53ms/step - accuracy: 0.9001 - loss: 0.2754 - val_accuracy: 0.8742 - val_loss: 0.3443 - learning_rate: 5.0000e-04
+Epoch 10/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 48s 51ms/step - accuracy: 0.9046 - loss: 0.2633 - val_accuracy: 0.8903 - val_loss: 0.2935 - learning_rate: 5.0000e-04
+Epoch 11/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 48s 51ms/step - accuracy: 0.9054 - loss: 0.2590 - val_accuracy: 0.8936 - val_loss: 0.3016 - learning_rate: 2.5000e-04
+Epoch 12/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 51s 54ms/step - accuracy: 0.9108 - loss: 0.2477 - val_accuracy: 0.9089 - val_loss: 0.2520 - learning_rate: 2.5000e-04
+Epoch 13/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 54s 57ms/step - accuracy: 0.9121 - loss: 0.2429 - val_accuracy: 0.9100 - val_loss: 0.2557 - learning_rate: 2.5000e-04
+Epoch 14/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 105s 111ms/step - accuracy: 0.9118 - loss: 0.2440 - val_accuracy: 0.8959 - val_loss: 0.3235 - learning_rate: 2.5000e-04
+Epoch 15/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 101s 107ms/step - accuracy: 0.9139 - loss: 0.2379 - val_accuracy: 0.8729 - val_loss: 0.3406 - learning_rate: 2.5000e-04
+Epoch 16/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 100s 106ms/step - accuracy: 0.9180 - loss: 0.2250 - val_accuracy: 0.9091 - val_loss: 0.2491 - learning_rate: 1.2500e-04
+Epoch 17/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 98s 104ms/step - accuracy: 0.9173 - loss: 0.2275 - val_accuracy: 0.9098 - val_loss: 0.2482 - learning_rate: 1.2500e-04
+Epoch 18/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 109s 116ms/step - accuracy: 0.9192 - loss: 0.2265 - val_accuracy: 0.9084 - val_loss: 0.2514 - learning_rate: 1.2500e-04
+Epoch 19/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 99s 105ms/step - accuracy: 0.9192 - loss: 0.2244 - val_accuracy: 0.9029 - val_loss: 0.2647 - learning_rate: 1.2500e-04
+Epoch 20/20
+938/938 ━━━━━━━━━━━━━━━━━━━━ 105s 111ms/step - accuracy: 0.9170 - loss: 0.2272 - val_accuracy: 0.9095 - val_loss: 0.2504 - learning_rate: 1.2500e-04
+313/313 ━━━━━━━━━━━━━━━━━━━━ 9s 28ms/step - accuracy: 0.9094 - loss: 0.2589
+Test accuracy: 0.9097999930381775
+
+Process finished with exit code 0
