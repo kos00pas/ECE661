@@ -21,9 +21,22 @@
      - These gradients are then used to update the weights
 
 ### RNN Differ from Feedforward NN
-* output dependency 
-  * Feedforward NN
-  * RNN 
+
+1. **Output Dependency**  
+   - **Feedforward NN**: The output is only dependent on the current input.  
+   - **RNN**: The output depends on both the current input and previous computations via the hidden state.
+
+2. **Memory of Past Inputs**  
+   - **Feedforward NN**: Has no memory; each input is processed independently.  
+   - **RNN**: Retains memory through hidden states, allowing the model to "remember" past inputs.
+
+3. **Weight Sharing**  
+   - **Feedforward NN**: Each layer has unique weight parameters, treating each input as independent.  
+   - **RNN**: Shares the same weight parameters across all time steps, enabling it to generalize across the entire sequence.
+
+4. **Training Process**  
+   - **Feedforward NN**: Trained using standard backpropagation.  
+   - **RNN**: Trained using **Backpropagation Through Time (BPTT)** to compute gradients over all time steps.
 
 ## Part 2
 ### Vanishing gradient problem 
