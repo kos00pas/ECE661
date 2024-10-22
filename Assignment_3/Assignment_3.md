@@ -1,9 +1,9 @@
 # Assignment 3 
-## Pashiourtides Costas 
+### Pashiourtides Costas 
 
 # Exercise 1
 
-## Part 1
+## Part 1 ----------------------------------------------------------------------
 ### What is RNN 
 - RNN stands for Recurrent Neural Network and is a type of deep neural network.
 - It is designed to handle sequential or time-series data.
@@ -15,7 +15,7 @@
    - **share the same weight parameters** across all time steps 
    - This allows the  model to treat each part of the sequence equally,
      - making it capable of learning patterns that occur at any point in the sequence.
-3. .
+3. 
    - RNNs are trained using **Backpropagation Through Time (BPTT)**.
      - BPTT unrolls the RNN across all time steps and computes gradients for each time step. 
      - These gradients are then used to update the weights
@@ -38,7 +38,7 @@
    - **Feedforward NN**: Trained using standard backpropagation.  
    - **RNN**: Trained using **Backpropagation Through Time (BPTT)** to compute gradients over all time steps.
 
-## Part 2
+## Part 2 ----------------------------------------------------------------------
 ### Vanishing gradient problem 
 - In backpropagation, when the gradient approaches zero, it makes weight updates insignificant, preventing effective learning in earlier layers.
 
@@ -51,10 +51,40 @@
 - Due to RNN's recursive nature, gradients are propagated through both layers and time steps, which causes long-term dependencies to vanish more quickly.
 
 
-## Part 3
-#### Application 1: Speech Recognition
+## Part 3 ----------------------------------------------------------------------
+### Application 1: Speech Recognition
 - RNNs are effective in speech recognition as they can process sequences of audio signals over time, capturing the temporal dependencies between phonemes and words to convert spoken language into text.
-#### Application 2: Video Analysis
+### Application 2: Video Analysis
 - RNNs are used in video analysis to model temporal relationships between video frames, enabling tasks such as action recognition, video captioning, and anomaly detection by understanding the sequence of events over time.
 
-## Part 4
+## Part 4 ----------------------------------------------------------------------
+
+
+
+# Exercise 2
+## Part 1 ----------------------------------------------------------------------
+### LSTM
+- LSTM is a type of RNN designed to handle long-term dependencies in sequence data.
+- It has a more complex architecture with forget, input, and output gates, allowing it to selectively retain or forget information over long sequences.
+### Addressing Vanishing Gradient Problem
+- The gate mechanism helps prevent the gradient from becoming too small during backpropagation.
+  - How? By regulating the flow of information in the network to preserve essential data and maintain strong gradients:
+    - Forget Gate: Decides what information to discard from the cell state.
+    - Input Gate: Determines what new information to add or update in the cell state.
+    - Output Gate: Controls what information is output as the hidden state at each time step.
+    - Cell State: allow information to flow through without being significantly modified, preserving important information over time.
+## Part 2 ----------------------------------------------------------------------
+### LSTM examples with superior performance to RNNs
+- Speech Recognition
+  - More accurate and reliable in capturing context over long speech sequences, improving recognition accuracy.
+- Text Generation
+  - Can generate more contextually relevant and structured sentences, keeping track of long-term dependencies.
+- Machine Translation
+  - Performs better with longer and more complex sentences, improving translation accuracy.
+
+
+## Part 3 ----------------------------------------------------------------------
+
+
+
+
