@@ -40,15 +40,21 @@
 
 ## Part 2
 ### Vanishing gradient problem 
+- In backpropagation, when the gradient approaches zero, it makes weight updates insignificant, preventing effective learning in earlier layers.
 
-### Vanishing gradient problenm in RNN 
+### Vanishing gradient problem in RNN 
+- Due to sequential nature of RNN gradients are propagated not only through layers but also through time steps making long-term dependencies hard to learn.
 
-### WHY vgp affect training  
+
+### Why Vanishing gradient problem affect RNN  training  
+- Vanishing gradients result in minimal or no weight updates, preventing the network from effectively learning and capturing important patterns.
+- Due to RNN's recursive nature, gradients are propagated through both layers and time steps, which causes long-term dependencies to vanish more quickly.
+
 
 ## Part 3
-### RNN affectivenes through application  
-#### Application 1:
-
-#### Application 2: 
+#### Application 1: Speech Recognition
+- RNNs are effective in speech recognition as they can process sequences of audio signals over time, capturing the temporal dependencies between phonemes and words to convert spoken language into text.
+#### Application 2: Video Analysis
+- RNNs are used in video analysis to model temporal relationships between video frames, enabling tasks such as action recognition, video captioning, and anomaly detection by understanding the sequence of events over time.
 
 ## Part 4
